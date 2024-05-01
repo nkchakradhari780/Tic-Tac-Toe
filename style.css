@@ -183,4 +183,31 @@ p{
     .winbox{
         width: 350px;
     }
+    .line1 {
+        width: 340px;
+    }
+    .line2 {
+        width: 340px;
+    }
+    .line3 {
+        width: 340px;
+    }
+    .line4 {
+        left: 61px;
+    }
+    /* .line5 {
+        : 340px;
+    } */
+    .line6 {
+        right: 61px;
+    }
+    .line7 {
+        width: 340px;
+        transform: skewY(49deg);
+    }
+    .line8 {
+        width: 340px;
+        transform: skewY(-49deg);
+    }
+    
 }
