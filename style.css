@@ -109,6 +109,60 @@ p{
     border-radius: 50%;
     background-color: aqua;
 }
+.line1{
+    position: absolute;
+    width: 390px;
+    height: 4px;
+    background-color: #c50202;
+    top: 135px;
+}
+.line2{
+    position: absolute;
+    width: 390px;
+    height: 4px;
+    background-color: #c50202;
+}
+.line3{
+    position: absolute;
+    width: 390px;
+    height: 4px;
+    background-color: #c50202;
+    top: 395px;
+}
+.line4{
+    position: absolute;
+    height: 390px;
+    width: 4px;
+    background-color: #c50202;
+    left: 67px;
+}
+.line5{
+    position: absolute;
+    height: 390px;
+    width: 4px;
+    background-color: #c50202;
+}
+.line6{
+    position: absolute;
+    height: 390px;
+    width: 4px;
+    background-color: #c50202;
+    right: 67px;
+}
+.line7{
+    position: absolute;
+    width: 390px;
+    height: 4px;
+    background-color: #c50202;
+    transform: skewY(45deg);
+}
+.line8{
+    position: absolute;
+    width: 390px;
+    height: 4px;
+    background-color: #c50202;
+    transform: skewY(-45deg);
+}
 @media screen and (max-width: 450px){
     .container{
         width: 350px;
