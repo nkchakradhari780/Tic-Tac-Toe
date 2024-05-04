@@ -10,6 +10,8 @@ let oScore = document.querySelector("#oscore");
 let strike = document.querySelector("#strike");
 let btnclick=0;
 let changeMode = document.querySelector("#mode");
+let win = false;
+let checktie = false;
 const winningState = [
     {combo:[0,1,2], strikeClass: "line1"},
     {combo:[3,4,5], strikeClass: "line2"},
@@ -20,17 +22,25 @@ const winningState = [
     {combo:[0,4,8], strikeClass: "line7"},
     {combo:[2,4,6], strikeClass: "line8"},
 ];
+
+const clickedBox = [];
 let px = 0;
 let po = 0;
 let tie = 0;
+
 ResetGame.addEventListener("click", () => {
     console.log("Reset button clicked");
     for(let pattern of winningState){
         const {combo,strikeClass} = pattern;
         strike.classList.remove(strikeClass);
     }
-    winbox.style.display = "none"; // Hide the winbox div
+    playerX = true;
+    win = false;
+    btnclick = 0;
+    winbox.style.display = "none"; 
+    textRemove();
     enableBox();
+    clickedBox.splice(0,clickedBox.length);
     box.innerText = "";
 });
 
@@ -41,36 +51,44 @@ NewGame.addEventListener("click", ()=> {
         const {combo,strikeClass} = pattern;
         strike.classList.remove(strikeClass);
     }
+    playerX = true;
+    win = false;
     px = 0;
     po = 0;
     tie = 0;
+    btnclick = 0;
     xScore.innerText = px;
     oScore.innerText = po;
     tieScore.innerText = tie;
     enableBox();
+    textRemove();
+    clickedBox.splice(0,clickedBox.length);
     box.innerText = "";
 });
 
-boxes.forEach( box =>{
+boxes.forEach( (box,index) =>{
     box.addEventListener("click",()=>{
         console.log("box was clicked");
         btnclick++;
         if(playerX===true){
+            disableBox();
             box.innerText = "X";
             playerX = false;
-        }
-        else{
-            box.innerText = "O";
-            playerX = true;
+            clickedBox.push(index);
+            checkWinner();
+            console.log("btnclick:"+btnclick);
+            if(win === false ){
+                setTimeout(()=>computerTurn(), 1000);
+            }
         }
         box.disabled = true;
-        checkWinner();
     });
 });
 
 const disableBox = () => {
     for(let box of boxes){
         box.disabled = true;
+        console.log("Disable box was clicked");
     }
 }
 const checkWinner = () => {
@@ -89,6 +107,8 @@ const checkWinner = () => {
                     winbox.innerText = "Winner is X"
                     px++;
                     xScore.innerText = px;
+                    win = true;
+                    break;
                 }
                 else{
                     winbox.innerText = "Winner is O"
@@ -97,12 +117,16 @@ const checkWinner = () => {
                 }
                 disableBox();
             }
-            if(pos1 !== pos2 && pos2 !== pos3 && btnclick===9){
-                winbox.innerText = "Tie";
-                tie++;
-                btnclick=0;
-                tieScore.innerText = tie;
-                winbox.style.display="block";
+            if( pos1 !== pos2 || pos1 !== pos3 || pos2 !== pos3){
+                console.log("inside");
+                if(btnclick===9 && checktie===false){
+                    winbox.innerText = "Tie";
+                    tie++;
+                    tieScore.innerText = tie;
+                    winbox.style.display="block";
+                    console.log("Tie");
+                    checktie = true;
+                }
             }
         }
     }
@@ -110,7 +134,54 @@ const checkWinner = () => {
 
 const enableBox = () => {
     for(let box of boxes ){
-        box.disabled = false;
+        if(box.innerText === ""){
+            box.disabled = false;
+        }
+        console.log("Enable box was called");
+    }
+}
+
+const textRemove =() =>{
+    for(let box of boxes){
         box.innerText = "";
     }
+}
+
+let randomBox = () =>{
+    if(btnclick === 9){
+        return;
+    }
+    let min = 0;
+    let max = 8;
+    let randval =  Math.floor(Math.random() * (max - min + 1)) + min;
+    console.log(clickedBox);
+    console.log("rand")
+    for(let i = 0;i<clickedBox.length;i++){
+        if(clickedBox[i] === randval){
+            console.log("overlapped");
+            randval = randomBox();
+        }
+    }
+    return randval;
+} 
+
+let computerTurn = () =>{
+    let boxpos = randomBox();
+    console.log(boxpos);
+    for(let i = 0;i<=8;i++){
+        if(i === boxpos){
+            console.log("Success");
+            let cmpbox = boxes[i];
+            cmpbox.innerText = "O";
+            playerX = true;
+            clickedBox.push(i);
+            console.log(clickedBox);
+            btnclick++;
+            console.log("btnclick:"+btnclick);
+            checkWinner();
+            enableBox();
+            break;
+        }
+    }
+
 }
