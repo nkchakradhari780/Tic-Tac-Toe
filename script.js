@@ -12,6 +12,7 @@ let btnclick=0;
 let changeMode = document.querySelector("#mode");
 let win = false;
 let checktie = false;
+let mode = true;
 const winningState = [
     {combo:[0,1,2], strikeClass: "line1"},
     {combo:[3,4,5], strikeClass: "line2"},
@@ -77,8 +78,23 @@ boxes.forEach( (box,index) =>{
             clickedBox.push(index);
             checkWinner();
             console.log("btnclick:"+btnclick);
-            if(win === false ){
-                setTimeout(()=>computerTurn(), 1000);
+            if(mode){
+                if(win === false ){
+                    setTimeout(()=>computerTurn(), 1000);
+                }
+            }
+            if(mode===false){
+                enableBox();
+            }
+        }
+        else{
+            console.log("inside else");
+            if(mode===false){
+                console.log("inside elseif");
+                box.innerText = "O";
+                playerX = true;
+                clickedBox.push(index);
+                checkWinner();
             }
         }
         box.disabled = true;
@@ -185,3 +201,15 @@ let computerTurn = () =>{
     }
 
 }
+
+changeMode.addEventListener("click",()=>{
+    if(mode){
+        mode=false;
+        changeMode.innerText = "Pl";
+    }
+    else{
+        mode=true;
+        changeMode.innerText = "Cp";
+    }
+    console.log(mode);
+})
